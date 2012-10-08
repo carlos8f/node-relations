@@ -1,0 +1,27 @@
+{
+  "name": "relations",
+  "version": "0.0.0",
+  "description": "entity relationship, role, and permissions API for Node.js",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "*"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/carlos8f/node-relations.git"
+  },
+  "homepage": "https://github.com/carlos8f/node-relations",
+  "keywords": [
+    "acl",
+    "access",
+    "data",
+    "model",
+    "granular"
+  ],
+  "author": "Carlos Rodriguez <carlos@s8f.org> (http://s8f.org/)",
+  "license": "MIT"
+}

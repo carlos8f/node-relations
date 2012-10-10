@@ -22,14 +22,14 @@ describe('basic test', function () {
     relations.repos('%s is a watcher', sagar);
   });
 
-  it('can brian can administrate views (named tokens)', function (done) {
+  it('can brian administrate views (named tokens)', function (done) {
     relations.repos('can :user administrate :repo', {user: brian, repo: views}, function (can) {
       assert(can);
       done();
     });
   });
 
-  it('can carlos can push to views', function (done) {
+  it('can carlos push to views', function (done) {
     relations.repos('can %s push to %s', carlos, views, function (can) {
       assert(can);
       done();

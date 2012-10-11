@@ -8,11 +8,10 @@ store.on('init', function (options, cb) {
 
 function initSubject (cmd) {
   contexts[cmd.ctx.name] || (contexts[cmd.ctx.name] = {});
-  contexts[cmd.ctx.name][cmd.subject] || (contexts[cmd.ctx.name][cmd.subject] = {
+  return contexts[cmd.ctx.name][cmd.subject] || (contexts[cmd.ctx.name][cmd.subject] = {
     objects: {},
     roles: {}
   });
-  return contexts[cmd.ctx.name][cmd.subject];
 }
 
 store.on('declaration', function (cmd, cb) {
@@ -53,9 +52,7 @@ store.on('verb-question', function (cmd, cb) {
 
 store.on('role-question', function (cmd, cb) {
   var subject = initSubject(cmd);
-  var is = Object.keys(subject.roles).some(function (role) {
-    return role === cmd.role;
-  });
+  var is = subject.roles[cmd.role];
   if (!is && cmd.object && subject.objects[cmd.object]) {
     is = Object.keys(subject.objects[cmd.object]).some(function (role) {
       return role === cmd.role;

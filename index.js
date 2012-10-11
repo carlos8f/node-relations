@@ -31,7 +31,7 @@ relations.define = function (name, structure) {
     } while (args.length);
 
     function raiseErr (err) {
-      if (!err instanceof Error) err = new Error(err);
+      if (typeof err === 'string') err = new Error(err);
       if (fn) return fn(err);
       throw err;
     }

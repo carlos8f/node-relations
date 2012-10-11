@@ -22,7 +22,7 @@ describe('basic test', function () {
     relations.repos('%s is a watcher', sagar);
   });
 
-  it('can brian administrate views (named tokens)', function (done) {
+  it('can brian administrate views', function (done) {
     relations.repos('can :user administrate :repo?', {user: brian, repo: views}, function (err, can) {
       assert.ifError(err);
       assert(can);
@@ -63,7 +63,7 @@ describe('basic test', function () {
   });
 
   it('is sagar a watcher', function (done) {
-    relations.repos('is sagar a watcher?', function (err, is) {
+    relations.repos('is ' + sagar + ' a watcher?', function (err, is) {
       assert.ifError(err);
       assert(is);
       done();
@@ -79,7 +79,7 @@ describe('basic test', function () {
   });
 
   it('what can brian administrate', function (done) {
-    relations.repos('%s can administrate what', brian, function (err, list) {
+    relations.repos('what can %s administrate', brian, function (err, list) {
       assert.ifError(err);
       assert.deepEqual(list, [views]);
       done();

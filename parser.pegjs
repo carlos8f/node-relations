@@ -4,21 +4,20 @@
 
 start
   = ret:(
-  Declaration
-  / Revocation
-  / VerbQuestion
-  / RoleQuestion
-  / VerbRequest
+  RoleQuestion
   / RoleRequest
+  / Declaration
+  / VerbRequest
+  / VerbQuestion
   ) {
     if (!ret.object) delete ret.object
     return ret
   }
 
 Declaration "declaration"
-  = subject:Token " " Positive " " role:Token Preposition? object:Obj? "."? {
+  = subject:Token " " pos:( Negative / Positive ) Quantifier? " " role:Token Preposition? object:Obj? "."? {
     return {
-      type: "declaration",
+      type: pos ? "declaration" : "revocation",
       subject: subject,
       role: role,
       object: object
@@ -121,13 +120,17 @@ Obj "object"
   }
 
 Positive "positive declaration"
-  = ( "is" / "are" / "am" ) Quantifier?
+  = ( "is" / "are" / "am" ) {
+    return true
+  }
 
 Quantifier "quantifier"
   = " " ( "an" / "a" / "the" )
 
 Negative "negative declaration"
-  = ( "isn't" / "is not" / "are not" / "am not" ) Quantifier?
+  = ( "isn't" / "is not" / "are not" / "am not" ) Quantifier? {
+    return false
+  }
 
 Preposition "preposition"
   = " " ( "of" / "to" / "from" / "in" )

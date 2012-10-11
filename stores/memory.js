@@ -54,15 +54,15 @@ store.on('verb-question', function (cmd, cb) {
 
 store.on('role-question', function (cmd, cb) {
   var subject = initSubject(cmd);
-  var can = Object.keys(subject.roles).some(function (role) {
+  var is = Object.keys(subject.roles).some(function (role) {
     return role === cmd.role;
   });
-  if (!can && cmd.object && subject.objects[cmd.object]) {
-    can = Object.keys(subject.objects[cmd.object]).some(function (role) {
+  if (!is && cmd.object && subject.objects[cmd.object]) {
+    is = Object.keys(subject.objects[cmd.object]).some(function (role) {
       return role === cmd.role;
     });
   }
-  cb(null, can);
+  cb(null, is);
 });
 
 store.on('verb-request', function (cmd, cb) {

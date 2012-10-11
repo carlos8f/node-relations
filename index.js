@@ -11,11 +11,11 @@ relations.define = function (name, structure) {
     var str, named, unnamed, fn;
     do {
       var arg = args.shift();
-      if (typeof arg === 'object') {
-        named = arg;
-      }
-      else if (Array.isArray(arg)) {
+      if (Array.isArray(arg)) {
         unnamed = arg;
+      }
+      else if (typeof arg === 'object') {
+        named = arg;
       }
       else if (typeof arg === 'string' || typeof arg === 'number') {
         if (typeof arg === 'string' && !str) {

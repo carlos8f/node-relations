@@ -66,6 +66,7 @@ describe('basic test', function () {
     relations.repos('is %s a watcher', sagar, function (err, is) {
       assert.ifError(err);
       assert(is);
+      done();
     });
   });
   

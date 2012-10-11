@@ -3,7 +3,6 @@ var store = module.exports = require('eventflow')();
 var contexts = {};
 
 store.on('init', function (options, cb) {
-  console.log('on init');
   cb();
 });
 

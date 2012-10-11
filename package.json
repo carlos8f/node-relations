@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "description": "entity relationship, role, and permissions API for Node.js",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "eventflow": "0.0.6",
+    "pegjs": "~0.7.0"
+  },
   "devDependencies": {
     "mocha": "*"
   },

@@ -23,42 +23,48 @@ describe('basic test', function () {
   });
 
   it('can brian administrate views (named tokens)', function (done) {
-    relations.repos('can :user administrate :repo', {user: brian, repo: views}, function (can) {
+    relations.repos('can :user administrate :repo', {user: brian, repo: views}, function (err, can) {
+      assert.ifError(err);
       assert(can);
       done();
     });
   });
 
   it('can carlos push to views', function (done) {
-    relations.repos('can %s push to %s', carlos, views, function (can) {
+    relations.repos('can %s push to %s', carlos, views, function (err, can) {
+      assert.ifError(err);
       assert(can);
       done();
     });
   });
 
   it('can sagar pull from views', function (done) {
-    relations.repos('can %s pull from %s', sagar, views, function (can) {
+    relations.repos('can %s pull from %s', sagar, views, function (err, can) {
+      assert.ifError(err);
       assert(can);
       done();
     });
   });
 
   it('can sagar pull', function (done) {
-    relations.repos('can %s pull', sagar, function (can) {
+    relations.repos('can %s pull', sagar, function (err, can) {
+      assert.ifError(err);
       assert(can);
       done();
     });
   });
 
   it('is brian a collaborator of buffet', function (done) {
-    relations.repos('is %s a collaborator of %s', brian, buffet, function (is) {
+    relations.repos('is %s a collaborator of %s', brian, buffet, function (err, is) {
+      assert.ifError(err);
       assert(!is);
       done();
     });
   });
 
   it('is sagar a watcher', function (done) {
-    relations.repos('is %s a watcher', sagar, function (is) {
+    relations.repos('is %s a watcher', sagar, function (err, is) {
+      assert.ifError(err);
       assert(is);
     });
   });

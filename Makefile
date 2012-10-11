@@ -1,8 +1,9 @@
-test:
-	@./node_modules/.bin/mocha \
-		--reporter spec \
-		--bail \
-		--timeout 5s \
-		--require test/common.js
+all: build
 
-.PHONY: test
+build:
+	./node_modules/.bin/pegjs parser.pegjs
+
+test: build
+	@./node_modules/.bin/mocha --reporter spec --timeout 2s --require test/common.js
+
+.PHONY: build test

@@ -77,7 +77,7 @@ Token "token"
   = NamedToken / UnnamedToken / Literal
 
 NamedToken "named token"
-  = ":" name:[^ ]+ {
+  = ":" name:[^ ?]+ {
     return {
       name: name.join("")
     }
@@ -109,7 +109,7 @@ SingleQuotedLiteral "single-quoted literal"
   }
 
 UnquotedLiteral "unquoted literal"
-  = value:[^ ]+ {
+  = value:[^ ?]+ {
     return {
       value: value.join("")
     }

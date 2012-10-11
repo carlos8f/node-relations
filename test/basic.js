@@ -17,13 +17,13 @@ describe('basic test', function () {
     relations.repos('%s is the owner of %s', carlos, buffet);
     relations.repos('%s is a collaborator of %s', carlos, views);
     relations.repos('%s is a watcher', carlos);
-    relations.repos('%s is an owner of %s', brian, views);
+    relations.repos(':user is the "owner" of :repo', {user: brian, repo: views});
     relations.repos('%s is a watcher', brian);
     relations.repos('%s is a watcher', sagar);
   });
 
   it('can brian administrate views (named tokens)', function (done) {
-    relations.repos('can :user administrate :repo', {user: brian, repo: views}, function (err, can) {
+    relations.repos('can :user administrate :repo?', {user: brian, repo: views}, function (err, can) {
       assert.ifError(err);
       assert(can);
       done();
@@ -31,7 +31,7 @@ describe('basic test', function () {
   });
 
   it('can carlos push to views', function (done) {
-    relations.repos('can %s push to %s', carlos, views, function (err, can) {
+    relations.repos('can %s push to %s', [carlos, views], function (err, can) {
       assert.ifError(err);
       assert(can);
       done();
@@ -39,7 +39,7 @@ describe('basic test', function () {
   });
 
   it('can sagar pull from views', function (done) {
-    relations.repos('can %s pull from %s', sagar, views, function (err, can) {
+    relations.repos('can %s pull from views?', sagar, function (err, can) {
       assert.ifError(err);
       assert(can);
       done();
@@ -47,7 +47,7 @@ describe('basic test', function () {
   });
 
   it('can sagar pull', function (done) {
-    relations.repos('can %s pull', sagar, function (err, can) {
+    relations.repos('can %s pull?', sagar, function (err, can) {
       assert.ifError(err);
       assert(can);
       done();
@@ -55,7 +55,7 @@ describe('basic test', function () {
   });
 
   it('is brian a collaborator of buffet', function (done) {
-    relations.repos('is %s a collaborator of %s', brian, buffet, function (err, is) {
+    relations.repos('is %s a collaborator of "' + buffet + '"?', brian, function (err, is) {
       assert.ifError(err);
       assert(!is);
       done();
@@ -63,7 +63,7 @@ describe('basic test', function () {
   });
 
   it('is sagar a watcher', function (done) {
-    relations.repos('is %s a watcher', sagar, function (err, is) {
+    relations.repos('is sagar a watcher?', function (err, is) {
       assert.ifError(err);
       assert(is);
       done();
@@ -71,14 +71,14 @@ describe('basic test', function () {
   });
   
   it('what can carlos pull from', function (done) {
-    relations.repos('what can %s pull from', carlos, function (err, list) {
+    relations.repos('what can %s pull from?', carlos, function (err, list) {
       assert.ifError(err);
       assert.deepEqual(list, [buffet, views]);
       done();
     });
   });
 
-  it('brian can administrate what', function (done) {
+  it('what can brian administrate', function (done) {
     relations.repos('%s can administrate what', brian, function (err, list) {
       assert.ifError(err);
       assert.deepEqual(list, [views]);
@@ -103,7 +103,7 @@ describe('basic test', function () {
   });
 
   it('carlos is not a collaborator of views', function (done) {
-    relations.repos('%s is not a collaborator of %s', carlos, views);
+    relations.repos('%s is not a collaborator of %s', [carlos, views]);
     relations.repos('can %s push to %s', carlos, views, function (can) {
       assert(!can);
       done();

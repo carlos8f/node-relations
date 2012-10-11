@@ -797,26 +797,26 @@ module.exports = (function(){
           }
         }
         if (result0 !== null) {
-          if (/^[^ ]/.test(input.charAt(pos))) {
+          if (/^[^ ?]/.test(input.charAt(pos))) {
             result2 = input.charAt(pos);
             pos++;
           } else {
             result2 = null;
             if (reportFailures === 0) {
-              matchFailed("[^ ]");
+              matchFailed("[^ ?]");
             }
           }
           if (result2 !== null) {
             result1 = [];
             while (result2 !== null) {
               result1.push(result2);
-              if (/^[^ ]/.test(input.charAt(pos))) {
+              if (/^[^ ?]/.test(input.charAt(pos))) {
                 result2 = input.charAt(pos);
                 pos++;
               } else {
                 result2 = null;
                 if (reportFailures === 0) {
-                  matchFailed("[^ ]");
+                  matchFailed("[^ ?]");
                 }
               }
             }
@@ -1107,26 +1107,26 @@ module.exports = (function(){
         
         reportFailures++;
         pos0 = pos;
-        if (/^[^ ]/.test(input.charAt(pos))) {
+        if (/^[^ ?]/.test(input.charAt(pos))) {
           result1 = input.charAt(pos);
           pos++;
         } else {
           result1 = null;
           if (reportFailures === 0) {
-            matchFailed("[^ ]");
+            matchFailed("[^ ?]");
           }
         }
         if (result1 !== null) {
           result0 = [];
           while (result1 !== null) {
             result0.push(result1);
-            if (/^[^ ]/.test(input.charAt(pos))) {
+            if (/^[^ ?]/.test(input.charAt(pos))) {
               result1 = input.charAt(pos);
               pos++;
             } else {
               result1 = null;
               if (reportFailures === 0) {
-                matchFailed("[^ ]");
+                matchFailed("[^ ?]");
               }
             }
           }

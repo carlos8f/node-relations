@@ -95,13 +95,14 @@ relations.define = function (name, structure) {
 relations._queue = [];
 
 relations.stores = {
-  memory: require('./stores/memory')
+  memory: require('./stores/memory'),
+  mysql: require('./stores/mysql')
 };
 
-relations.use = function (store) {
+relations.use = function (store, options) {
   relations._ready = false;
   relations.store = store;
-  store.invoke('init', {}, function (err) {
+  store.invoke('init', options || {}, function (err) {
     if (err) throw err;
     relations._ready = true;
   });

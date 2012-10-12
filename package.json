@@ -8,7 +8,8 @@
     "pegjs": "~0.7.0"
   },
   "devDependencies": {
-    "mocha": "*"
+    "mocha": "*",
+    "mysql": "2.0.0-alpha3"
   },
   "scripts": {
     "test": "make test"

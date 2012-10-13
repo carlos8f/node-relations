@@ -31,14 +31,7 @@ doBasicTest = function (store, options) {
     relations.repos('%s is a watcher', sagar);
   });
 
-  after(function (done) {
-    if (store) {
-      relations.store.tearDown(done);
-    }
-    else {
-      done();
-    }
-  });
+  after(relations.tearDown);
 
   it('can brian administrate views', function (done) {
     relations.repos('can :user administrate :repo?', {user: brian, repo: views}, function (err, can) {

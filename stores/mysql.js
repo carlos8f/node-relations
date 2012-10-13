@@ -1,5 +1,4 @@
 var store = module.exports = require('eventflow')();
-
 var client;
 
 store.on('init', function (options, cb) {

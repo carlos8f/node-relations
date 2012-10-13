@@ -96,7 +96,8 @@ relations._queue = [];
 
 relations.stores = {
   memory: require('./stores/memory'),
-  mysql: require('./stores/mysql')
+  mysql: require('./stores/mysql'),
+  redis: require('./stores/redis')
 };
 
 relations.use = function (store, options) {
@@ -106,6 +107,11 @@ relations.use = function (store, options) {
     if (err) throw err;
     relations._ready = true;
   });
+};
+
+relations.tearDown = function (cb) {
+  if (relations.store.tearDown) return relations.store.tearDown(cb);
+  else cb();
 };
 
 (function doQueue () {

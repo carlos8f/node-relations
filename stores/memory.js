@@ -1,5 +1,4 @@
 var store = module.exports = require('eventflow')();
-
 var contexts = {};
 
 store.on('init', function (options, cb) {
@@ -76,8 +75,3 @@ store.on('role-request', function (cmd, cb) {
     return subject.objects[k][cmd.role];
   }));
 });
-
-store.tearDown = function (cb) {
-  contexts = {};
-  cb();
-};

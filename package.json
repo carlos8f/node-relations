@@ -5,11 +5,13 @@
   "main": "index.js",
   "dependencies": {
     "eventflow": "0.0.6",
-    "pegjs": "~0.7.0"
+    "pegjs": "~0.7.0",
+    "async": "~0.1.22"
   },
   "devDependencies": {
     "mocha": "*",
-    "mysql": "2.0.0-alpha3"
+    "mysql": "2.0.0-alpha3",
+    "redis": "~0.8.1"
   },
   "scripts": {
     "test": "make test"

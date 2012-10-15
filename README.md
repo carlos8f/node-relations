@@ -198,7 +198,7 @@ relations.use(relations.stores.redis, {client: redis.createClient()});
 
 ### MySQL store
 
-To use the redis store, your app must make a
+To use the MySQL store, your app must make a
 [node-mysql](https://github.com/felixge/node-mysql) client and pass it like so:
 
 ```js

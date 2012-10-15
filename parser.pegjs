@@ -35,7 +35,7 @@ Revocation "revocation"
   }
 
 VerbQuestion "verb question"
-  = "can " subject:Token " " verb:Token Preposition? object:Obj? "?"? {
+  = "can "i subject:Token " " verb:Token Preposition? object:Obj? "?"? {
     return {
       type: "verb-question",
       subject: subject,
@@ -55,7 +55,7 @@ RoleQuestion "role question"
   }
 
 VerbRequest "verb request"
-  = "what can " subject:Token " " verb:Token Preposition? "?"? {
+  = "what can "i subject:Token " " verb:Token Preposition? "?"? {
     return {
       type: "verb-request",
       subject: subject,
@@ -64,7 +64,7 @@ VerbRequest "verb request"
   }
 
 RoleRequest "role request"
-  = "what " Positive " " subject:Token Quantifier? " " role:Token Preposition? "?"? {
+  = "what "i Positive " " subject:Token Quantifier? " " role:Token Preposition? "?"? {
     return {
       type: "role-request",
       subject: subject,
@@ -120,17 +120,17 @@ Obj "object"
   }
 
 Positive "positive declaration"
-  = ( "is" / "are" / "am" ) {
+  = ( "is"i / "are"i / "am"i ) {
     return true
   }
 
 Quantifier "quantifier"
-  = " " ( "an" / "a" / "the" )
+  = " " ( "an"i / "a"i / "the"i )
 
 Negative "negative declaration"
-  = ( "isn't" / "is not" / "are not" / "am not" ) Quantifier? {
+  = ( "isn't"i / "is not"i / "are not"i / "am not"i ) Quantifier? {
     return false
   }
 
 Preposition "preposition"
-  = " " ( "of" / "to" / "from" / "in" )
+  = " " ( "of"i / "to"i / "from"i / "in"i )

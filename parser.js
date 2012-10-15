@@ -364,8 +364,8 @@ module.exports = (function(){
         reportFailures++;
         pos0 = pos;
         pos1 = pos;
-        if (input.substr(pos, 4) === "can ") {
-          result0 = "can ";
+        if (input.substr(pos, 4).toLowerCase() === "can ") {
+          result0 = input.substr(pos, 4);
           pos += 4;
         } else {
           result0 = null;
@@ -571,8 +571,8 @@ module.exports = (function(){
         reportFailures++;
         pos0 = pos;
         pos1 = pos;
-        if (input.substr(pos, 9) === "what can ") {
-          result0 = "what can ";
+        if (input.substr(pos, 9).toLowerCase() === "what can ") {
+          result0 = input.substr(pos, 9);
           pos += 9;
         } else {
           result0 = null;
@@ -660,8 +660,8 @@ module.exports = (function(){
         reportFailures++;
         pos0 = pos;
         pos1 = pos;
-        if (input.substr(pos, 5) === "what ") {
-          result0 = "what ";
+        if (input.substr(pos, 5).toLowerCase() === "what ") {
+          result0 = input.substr(pos, 5);
           pos += 5;
         } else {
           result0 = null;
@@ -1206,8 +1206,8 @@ module.exports = (function(){
         
         reportFailures++;
         pos0 = pos;
-        if (input.substr(pos, 2) === "is") {
-          result0 = "is";
+        if (input.substr(pos, 2).toLowerCase() === "is") {
+          result0 = input.substr(pos, 2);
           pos += 2;
         } else {
           result0 = null;
@@ -1216,8 +1216,8 @@ module.exports = (function(){
           }
         }
         if (result0 === null) {
-          if (input.substr(pos, 3) === "are") {
-            result0 = "are";
+          if (input.substr(pos, 3).toLowerCase() === "are") {
+            result0 = input.substr(pos, 3);
             pos += 3;
           } else {
             result0 = null;
@@ -1226,8 +1226,8 @@ module.exports = (function(){
             }
           }
           if (result0 === null) {
-            if (input.substr(pos, 2) === "am") {
-              result0 = "am";
+            if (input.substr(pos, 2).toLowerCase() === "am") {
+              result0 = input.substr(pos, 2);
               pos += 2;
             } else {
               result0 = null;
@@ -1268,8 +1268,8 @@ module.exports = (function(){
           }
         }
         if (result0 !== null) {
-          if (input.substr(pos, 2) === "an") {
-            result1 = "an";
+          if (input.substr(pos, 2).toLowerCase() === "an") {
+            result1 = input.substr(pos, 2);
             pos += 2;
           } else {
             result1 = null;
@@ -1278,8 +1278,8 @@ module.exports = (function(){
             }
           }
           if (result1 === null) {
-            if (input.charCodeAt(pos) === 97) {
-              result1 = "a";
+            if (input.substr(pos, 1).toLowerCase() === "a") {
+              result1 = input.substr(pos, 1);
               pos++;
             } else {
               result1 = null;
@@ -1288,8 +1288,8 @@ module.exports = (function(){
               }
             }
             if (result1 === null) {
-              if (input.substr(pos, 3) === "the") {
-                result1 = "the";
+              if (input.substr(pos, 3).toLowerCase() === "the") {
+                result1 = input.substr(pos, 3);
                 pos += 3;
               } else {
                 result1 = null;
@@ -1323,8 +1323,8 @@ module.exports = (function(){
         reportFailures++;
         pos0 = pos;
         pos1 = pos;
-        if (input.substr(pos, 5) === "isn't") {
-          result0 = "isn't";
+        if (input.substr(pos, 5).toLowerCase() === "isn't") {
+          result0 = input.substr(pos, 5);
           pos += 5;
         } else {
           result0 = null;
@@ -1333,8 +1333,8 @@ module.exports = (function(){
           }
         }
         if (result0 === null) {
-          if (input.substr(pos, 6) === "is not") {
-            result0 = "is not";
+          if (input.substr(pos, 6).toLowerCase() === "is not") {
+            result0 = input.substr(pos, 6);
             pos += 6;
           } else {
             result0 = null;
@@ -1343,8 +1343,8 @@ module.exports = (function(){
             }
           }
           if (result0 === null) {
-            if (input.substr(pos, 7) === "are not") {
-              result0 = "are not";
+            if (input.substr(pos, 7).toLowerCase() === "are not") {
+              result0 = input.substr(pos, 7);
               pos += 7;
             } else {
               result0 = null;
@@ -1353,8 +1353,8 @@ module.exports = (function(){
               }
             }
             if (result0 === null) {
-              if (input.substr(pos, 6) === "am not") {
-                result0 = "am not";
+              if (input.substr(pos, 6).toLowerCase() === "am not") {
+                result0 = input.substr(pos, 6);
                 pos += 6;
               } else {
                 result0 = null;
@@ -1409,8 +1409,8 @@ module.exports = (function(){
           }
         }
         if (result0 !== null) {
-          if (input.substr(pos, 2) === "of") {
-            result1 = "of";
+          if (input.substr(pos, 2).toLowerCase() === "of") {
+            result1 = input.substr(pos, 2);
             pos += 2;
           } else {
             result1 = null;
@@ -1419,8 +1419,8 @@ module.exports = (function(){
             }
           }
           if (result1 === null) {
-            if (input.substr(pos, 2) === "to") {
-              result1 = "to";
+            if (input.substr(pos, 2).toLowerCase() === "to") {
+              result1 = input.substr(pos, 2);
               pos += 2;
             } else {
               result1 = null;
@@ -1429,8 +1429,8 @@ module.exports = (function(){
               }
             }
             if (result1 === null) {
-              if (input.substr(pos, 4) === "from") {
-                result1 = "from";
+              if (input.substr(pos, 4).toLowerCase() === "from") {
+                result1 = input.substr(pos, 4);
                 pos += 4;
               } else {
                 result1 = null;
@@ -1439,8 +1439,8 @@ module.exports = (function(){
                 }
               }
               if (result1 === null) {
-                if (input.substr(pos, 2) === "in") {
-                  result1 = "in";
+                if (input.substr(pos, 2).toLowerCase() === "in") {
+                  result1 = input.substr(pos, 2);
                   pos += 2;
                 } else {
                   result1 = null;

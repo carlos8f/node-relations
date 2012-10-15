@@ -37,6 +37,9 @@ relations.repos('Carlos is the owner of buffet.');
 ```
 
 This assigns the role `owner` to the subject `Carlos` for the object `buffet`.
+
+### Token replacements
+
 Note that the API has multiple syntaxes, and this is functionally equivalent:
 
 ```js

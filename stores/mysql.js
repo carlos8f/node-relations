@@ -89,6 +89,6 @@ store.on('role-request', function (cmd, cb) {
     });
 });
 
-store.tearDown = function (cb) {
+store.on('reset', function (cb) {
   client.query("DROP TABLE IF EXISTS `relations`", cb);
-};
+});

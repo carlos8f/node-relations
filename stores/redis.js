@@ -110,9 +110,9 @@ store.on('role-request', function (cmd, cb) {
   });
 });
 
-store.tearDown = function (cb) {
+store.on('reset', function (cb) {
   client.KEYS('relations:*', function (err, keys) {
     if (err || !keys) return cb(err);
     async.map(keys, client.DEL.bind(client), cb);
   });
-};
+});

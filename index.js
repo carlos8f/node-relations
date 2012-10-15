@@ -110,7 +110,9 @@ relations.use = function (store, options) {
 };
 
 relations.tearDown = function (cb) {
-  if (relations.store.tearDown) return relations.store.tearDown(cb);
+  if (relations.store.listeners('reset').length) {
+    relations.store.invoke('reset', cb);
+  }
   else cb();
 };
 

@@ -193,7 +193,7 @@ relations.repos('Who is the owner of %s?', 'buffet', function (err, users) {
 ### Syntax
 
 ```
-( Who | who ) can <verb> [ of / to / from / in ] <object> [?]
+( Who | who ) is [ a / an / the ] <role> [ of / to / from / in ] <object> [?]
 ```
 
 Revocation

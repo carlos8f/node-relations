@@ -110,6 +110,54 @@ store.on('role-request', function (cmd, cb) {
   });
 });
 
+store.on('verb-subject-request', function (cmd, cb) {
+  client.KEYS([
+    'relations',
+    cmd.ctx.name,
+    '*',
+    cmd.object
+  ].join(':'), function (err, keys) {
+    if (err || !keys) return cb(err, []);
+    async.map(keys, function (key, cb_) {
+      client.SMEMBERS(key, function (err, roles) {
+        var subject = key.split(':').slice(2, 3)[0];
+        if (err ) return cb_(err);
+        cb_(null, roles.some(function (role) {
+          return ~cmd.ctx.verbs[cmd.verb].indexOf(role);
+        }) ? subject : null);
+      });
+    }, function (err, subjects) {
+      if (err) return cb(err);
+      cb(null, subjects.filter(function (subjects) {
+        return !!subjects;
+      }));
+    });
+  });
+});
+
+store.on('role-subject-request', function (cmd, cb) {
+  client.KEYS([
+    'relations',
+    cmd.ctx.name,
+    '*',
+    cmd.object
+  ].join(':'), function (err, keys) {
+    if (err || !keys) return cb(err, []);
+    async.map(keys, function (key, cb_) {
+      client.SMEMBERS(key, function (err, roles) {
+        var subject = key.split(':').slice(2, 3)[0];
+        if (err) return cb_(err);
+        cb_(null, ~roles.indexOf(cmd.role) ? subject : null);
+      });
+    }, function (err, subjects) {
+      if (err) return cb(err);
+      cb(null, subjects.filter(function (subjects) {
+        return !!subjects;
+      }));
+    });
+  });
+});
+
 store.on('reset', function (cb) {
   client.KEYS('relations:*', function (err, keys) {
     if (err || !keys) return cb(err);

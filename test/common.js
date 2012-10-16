@@ -113,6 +113,22 @@ doBasicTest = function (store, options) {
     });
   });
 
+  it('who is the owner of views?', function (done) {
+    relations.repos('who is the owner of %s?', views, function (err, list) {
+      assert.ifError(err);
+      assert.deepEqual(list, [brian]);
+      done();
+    });
+  });
+
+  it('who can pull from views?', function (done) {
+    relations.repos('who can pull from %s?', views, function (err, list) {
+      assert.ifError(err);
+      assert.deepEqual(list.sort(), [carlos, brian]);
+      done();
+    });
+  });
+
   it('carlos is not a collaborator of views', function (done) {
     relations.repos('%s is not a collaborator of %s', [carlos, views]);
     relations.repos('can %s push to %s', carlos, views, function (can) {

@@ -75,3 +75,23 @@ store.on('role-request', function (cmd, cb) {
     return subject.objects[k][cmd.role];
   }));
 });
+
+store.on('verb-subject-request', function (cmd, cb) {
+  contexts[cmd.ctx.name] || (contexts[cmd.ctx.name] = {});
+  cb(null, Object.keys(contexts[cmd.ctx.name]).filter(function (subject) {
+    subject = contexts[cmd.ctx.name][subject];
+    if (!subject.objects[cmd.object]) return false;
+    return Object.keys(subject.objects[cmd.object]).some(function (role) {
+      return ~cmd.ctx.verbs[cmd.verb].indexOf(role);
+    });
+  }));
+});
+
+store.on('role-subject-request', function (cmd, cb) {
+  contexts[cmd.ctx.name] || (contexts[cmd.ctx.name] = {});
+  cb(null, Object.keys(contexts[cmd.ctx.name]).filter(function (subject) {
+    subject = contexts[cmd.ctx.name][subject];
+    if (!subject.objects[cmd.object]) return false;
+    return subject.objects[cmd.object][cmd.role];
+  }));
+});

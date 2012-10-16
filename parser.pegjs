@@ -4,7 +4,9 @@
 
 start
   = ret:(
-  RoleQuestion
+  RoleSubjectRequest
+  / VerbSubjectRequest
+  / RoleQuestion
   / RoleRequest
   / Declaration
   / VerbRequest
@@ -68,6 +70,24 @@ RoleRequest "role request"
     return {
       type: "role-request",
       subject: subject,
+      role: role
+    }
+  }
+
+VerbSubjectRequest "verb subject request"
+  = "who can "i verb:Token Preposition? " " object:Token "?"? {
+    return {
+      type: "verb-subject-request",
+      object: object,
+      verb: verb
+    }
+  }
+
+RoleSubjectRequest "role subject request"
+  = "who "i Positive Quantifier? " " role:Token Preposition? " " object:Token "?"? {
+    return {
+      type: "role-subject-request",
+      object: object,
       role: role
     }
   }

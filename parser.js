@@ -44,6 +44,8 @@ module.exports = (function(){
         "RoleQuestion": parse_RoleQuestion,
         "VerbRequest": parse_VerbRequest,
         "RoleRequest": parse_RoleRequest,
+        "VerbSubjectRequest": parse_VerbSubjectRequest,
+        "RoleSubjectRequest": parse_RoleSubjectRequest,
         "Token": parse_Token,
         "NamedToken": parse_NamedToken,
         "UnnamedToken": parse_UnnamedToken,
@@ -116,15 +118,21 @@ module.exports = (function(){
         var pos0;
         
         pos0 = pos;
-        result0 = parse_RoleQuestion();
+        result0 = parse_RoleSubjectRequest();
         if (result0 === null) {
-          result0 = parse_RoleRequest();
+          result0 = parse_VerbSubjectRequest();
           if (result0 === null) {
-            result0 = parse_Declaration();
+            result0 = parse_RoleQuestion();
             if (result0 === null) {
-              result0 = parse_VerbRequest();
+              result0 = parse_RoleRequest();
               if (result0 === null) {
-                result0 = parse_VerbQuestion();
+                result0 = parse_Declaration();
+                if (result0 === null) {
+                  result0 = parse_VerbRequest();
+                  if (result0 === null) {
+                    result0 = parse_VerbQuestion();
+                  }
+                }
               }
             }
           }
@@ -765,6 +773,211 @@ module.exports = (function(){
         reportFailures--;
         if (reportFailures === 0 && result0 === null) {
           matchFailed("role request");
+        }
+        return result0;
+      }
+      
+      function parse_VerbSubjectRequest() {
+        var result0, result1, result2, result3, result4, result5;
+        var pos0, pos1;
+        
+        reportFailures++;
+        pos0 = pos;
+        pos1 = pos;
+        if (input.substr(pos, 8).toLowerCase() === "who can ") {
+          result0 = input.substr(pos, 8);
+          pos += 8;
+        } else {
+          result0 = null;
+          if (reportFailures === 0) {
+            matchFailed("\"who can \"");
+          }
+        }
+        if (result0 !== null) {
+          result1 = parse_Token();
+          if (result1 !== null) {
+            result2 = parse_Preposition();
+            result2 = result2 !== null ? result2 : "";
+            if (result2 !== null) {
+              if (input.charCodeAt(pos) === 32) {
+                result3 = " ";
+                pos++;
+              } else {
+                result3 = null;
+                if (reportFailures === 0) {
+                  matchFailed("\" \"");
+                }
+              }
+              if (result3 !== null) {
+                result4 = parse_Token();
+                if (result4 !== null) {
+                  if (input.charCodeAt(pos) === 63) {
+                    result5 = "?";
+                    pos++;
+                  } else {
+                    result5 = null;
+                    if (reportFailures === 0) {
+                      matchFailed("\"?\"");
+                    }
+                  }
+                  result5 = result5 !== null ? result5 : "";
+                  if (result5 !== null) {
+                    result0 = [result0, result1, result2, result3, result4, result5];
+                  } else {
+                    result0 = null;
+                    pos = pos1;
+                  }
+                } else {
+                  result0 = null;
+                  pos = pos1;
+                }
+              } else {
+                result0 = null;
+                pos = pos1;
+              }
+            } else {
+              result0 = null;
+              pos = pos1;
+            }
+          } else {
+            result0 = null;
+            pos = pos1;
+          }
+        } else {
+          result0 = null;
+          pos = pos1;
+        }
+        if (result0 !== null) {
+          result0 = (function(offset, verb, object) {
+            return {
+              type: "verb-subject-request",
+              object: object,
+              verb: verb
+            }
+          })(pos0, result0[1], result0[4]);
+        }
+        if (result0 === null) {
+          pos = pos0;
+        }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("verb subject request");
+        }
+        return result0;
+      }
+      
+      function parse_RoleSubjectRequest() {
+        var result0, result1, result2, result3, result4, result5, result6, result7, result8;
+        var pos0, pos1;
+        
+        reportFailures++;
+        pos0 = pos;
+        pos1 = pos;
+        if (input.substr(pos, 4).toLowerCase() === "who ") {
+          result0 = input.substr(pos, 4);
+          pos += 4;
+        } else {
+          result0 = null;
+          if (reportFailures === 0) {
+            matchFailed("\"who \"");
+          }
+        }
+        if (result0 !== null) {
+          result1 = parse_Positive();
+          if (result1 !== null) {
+            result2 = parse_Quantifier();
+            result2 = result2 !== null ? result2 : "";
+            if (result2 !== null) {
+              if (input.charCodeAt(pos) === 32) {
+                result3 = " ";
+                pos++;
+              } else {
+                result3 = null;
+                if (reportFailures === 0) {
+                  matchFailed("\" \"");
+                }
+              }
+              if (result3 !== null) {
+                result4 = parse_Token();
+                if (result4 !== null) {
+                  result5 = parse_Preposition();
+                  result5 = result5 !== null ? result5 : "";
+                  if (result5 !== null) {
+                    if (input.charCodeAt(pos) === 32) {
+                      result6 = " ";
+                      pos++;
+                    } else {
+                      result6 = null;
+                      if (reportFailures === 0) {
+                        matchFailed("\" \"");
+                      }
+                    }
+                    if (result6 !== null) {
+                      result7 = parse_Token();
+                      if (result7 !== null) {
+                        if (input.charCodeAt(pos) === 63) {
+                          result8 = "?";
+                          pos++;
+                        } else {
+                          result8 = null;
+                          if (reportFailures === 0) {
+                            matchFailed("\"?\"");
+                          }
+                        }
+                        result8 = result8 !== null ? result8 : "";
+                        if (result8 !== null) {
+                          result0 = [result0, result1, result2, result3, result4, result5, result6, result7, result8];
+                        } else {
+                          result0 = null;
+                          pos = pos1;
+                        }
+                      } else {
+                        result0 = null;
+                        pos = pos1;
+                      }
+                    } else {
+                      result0 = null;
+                      pos = pos1;
+                    }
+                  } else {
+                    result0 = null;
+                    pos = pos1;
+                  }
+                } else {
+                  result0 = null;
+                  pos = pos1;
+                }
+              } else {
+                result0 = null;
+                pos = pos1;
+              }
+            } else {
+              result0 = null;
+              pos = pos1;
+            }
+          } else {
+            result0 = null;
+            pos = pos1;
+          }
+        } else {
+          result0 = null;
+          pos = pos1;
+        }
+        if (result0 !== null) {
+          result0 = (function(offset, role, object) {
+            return {
+              type: "role-subject-request",
+              object: object,
+              role: role
+            }
+          })(pos0, result0[4], result0[7]);
+        }
+        if (result0 === null) {
+          pos = pos0;
+        }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("role subject request");
         }
         return result0;
       }

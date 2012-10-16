@@ -19,7 +19,8 @@ store.on('init', function (options, cb) {
       + "`subject` VARCHAR(255) NOT NULL,"
       + "`role` VARCHAR(255) NOT NULL,"
       + "`object` VARCHAR(255) NOT NULL,"
-      + "PRIMARY KEY (`context`, `subject`, `role`, `object`)"
+      + "PRIMARY KEY (`context`, `subject`, `role`, `object`),"
+      + "INDEX object (`context`, `role`, `object`)"
       + ") ENGINE=InnoDB", cb);
   }
 });
@@ -68,7 +69,7 @@ store.on('role-question', function (cmd, cb) {
 });
 
 store.on('verb-request', function (cmd, cb) {
-  client.query("SELECT object FROM `relations`"
+  client.query("SELECT `object` FROM `relations`"
     + " WHERE `context` = ?"
     + " AND `subject` = ?"
     + " AND `role` IN (?)"
@@ -79,13 +80,33 @@ store.on('verb-request', function (cmd, cb) {
 });
 
 store.on('role-request', function (cmd, cb) {
-  client.query("SELECT object FROM `relations`"
+  client.query("SELECT `object` FROM `relations`"
     + " WHERE `context` = ?"
     + " AND `subject` = ?"
     + " AND `role` = ?"
     + " AND `object` != ''", [cmd.ctx.name, cmd.subject, cmd.role], function (err, rows) {
       if (err) return cb(err);
       cb(null, rows.map(function (row) { return row.object; }));
+    });
+});
+
+store.on('verb-subject-request', function (cmd, cb) {
+  client.query("SELECT `subject` FROM `relations`"
+    + " WHERE `context` = ?"
+    + " AND `object` = ?"
+    + " AND `role` IN (?)", [cmd.ctx.name, cmd.object, cmd.ctx.verbs[cmd.verb]], function (err, rows) {
+      if (err) return cb(err);
+      cb(null, rows.map(function (row) { return row.subject; }));
+    });
+});
+
+store.on('role-subject-request', function (cmd, cb) {
+    client.query("SELECT `subject` FROM `relations`"
+    + " WHERE `context` = ?"
+    + " AND `object` = ?"
+    + " AND `role` = ?", [cmd.ctx.name, cmd.object, cmd.role], function (err, rows) {
+      if (err) return cb(err);
+      cb(null, rows.map(function (row) { return row.subject; }));
     });
 });
 

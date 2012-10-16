@@ -162,6 +162,40 @@ The syntax for a **role request** consists of:
 ( What | what ) is <subject> [ a / an / the ] <role> [ of / to / from / in ] [?]
 ```
 
+Verb subject request
+--------------------
+
+To request an array of subjects who can perform an action on an object:
+
+```js
+relations.repos('Who can pull from %s?', 'buffet', function (err, users) {
+  // users = ['Carlos']
+});
+```
+
+### Syntax
+
+```
+( Who | who ) can <verb> [ of / to / from / in ] <object> [?]
+```
+
+Role subject request
+--------------------
+
+To request an array of subjects who have a role for an object:
+
+```js
+relations.repos('Who is the owner of %s?', 'buffet', function (err, users) {
+  // users = ['Carlos']
+});
+```
+
+### Syntax
+
+```
+( Who | who ) can <verb> [ of / to / from / in ] <object> [?]
+```
+
 Revocation
 ----------
 
@@ -275,6 +309,24 @@ Respond to a role request and call `cb(err, /* array */ objects)` with the resul
 - ctx - context object
 - subject
 - role
+
+### `verb-subject-request` (cmd, cb)
+
+Respond to a verb subject request and call `cb(err, /* array */ subjects)` with
+the result. `cmd` will be an object containing the properties:
+
+- ctx - context object
+- verb
+- object
+
+### `role-subject-request` (cmd, cb)
+
+Respond to a role subject request and call `cb(err, /* array */ subjects)` with
+the result. `cmd` will be an object containing the properties:
+
+- ctx - context object
+- role
+- object
 
 ### `reset` (cb)
 

@@ -88,11 +88,9 @@ relations.define = function (name, structure) {
     });
 
     cmd.ctx = ctx;
-    relations._queue.push(cmd);
+    queue(cmd);
   };
 };
-
-relations._queue = [];
 
 relations.stores = {
   memory: require('./stores/memory'),
@@ -116,7 +114,14 @@ relations.tearDown = function (cb) {
   else cb();
 };
 
-(function doQueue () {
+relations._queue = [];
+
+function queue (fn) {
+  if (!relations._queue.length) doQueue();
+  relations._queue.push(fn);
+}
+
+function doQueue () {
   process.nextTick(function () {
     if (!relations.store) {
       relations.use(relations.stores.memory);
@@ -125,6 +130,6 @@ relations.tearDown = function (cb) {
       var cmd = relations._queue.shift();
       relations.store.invoke(cmd.type, cmd, cmd.fn);
     }
-    doQueue();
+    if (relations._queue.length) doQueue();
   });
-})();
+}

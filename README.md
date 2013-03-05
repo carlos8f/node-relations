@@ -24,8 +24,26 @@ relations.define('repos', {
 ```
 
 Defining the context makes available a method on `relations` that matches the
-context name, in this case, `relations.repos()`. This is the only method we'll
-need to call.
+context name, in this case, `relations.repos()`. For permission checks, this is
+the only method we'll need to call.
+
+### Dynamic roles
+
+To add or modify roles at runtime, you can also use the following methods:
+
+```js
+// add a role dynamically
+relations.repos.addRole('scientist', ['test', 'hyphothesize']);
+// update the actions for a role
+relations.repos.updateRole('scientist', ['test', 'hypothesize', 'absquatulate']);
+// remove a role
+relations.repos.removeRole('scientist');
+```
+
+**Please note** that the role -> action map is defined exclusively in the code,
+and not stored. If you run a cluster of servers, and choose to use dynamic roles,
+you must call `addRole()` etc on ALL servers in the cluster (I suggest using
+pub/sub).
 
 Declarations
 ------------

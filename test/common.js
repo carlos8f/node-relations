@@ -136,4 +136,76 @@ doBasicTest = function (store, options) {
       done();
     });
   });
+
+  it('add owner role throws', function (done) {
+    assert.throws(function () {
+      relations.repos.addRole('owner', ['pull', 'push', 'administrate']);
+    }, function (err) {
+      return err.code === 'ER_DUP_ROLE';
+    });
+    done();
+  });
+
+  it('redefine owner', function (done) {
+    relations.repos.updateRole('owner', ['pull', 'push', 'administrate', 'absquatulate']);
+    done();
+  });
+
+  it('can carlos absquatulate buffet?', function (done) {
+    relations.repos('can %s absquatulate %s?', carlos, buffet, function (err, can) {
+      assert.ifError(err);
+      assert(can);
+      done();
+    });
+  });
+
+  it('what can carlos absquatulate?', function (done) {
+    relations.repos('what can %s absquatulate?', carlos, function (err, list) {
+      assert.ifError(err);
+      assert.deepEqual(list [buffet]);
+      done();
+    });
+  });
+
+  it('can brian absquatulate buffet?', function (done) {
+    relations.repos('can %s absquatulate %s?', brian, buffet, function (err, can) {
+      assert.ifError(err);
+      assert(!can);
+      done();
+    });
+  });
+
+  it('add scientist', function (done) {
+    relations.repos.addRole('scientist', ['test']);
+    relations.repos('%s is a scientist', sagar, done);
+  });
+
+  it('can sagar test views?', function (done) {
+    relations.repos('can %s test %s?', sagar, views, function (err, can) {
+      assert.ifError(err);
+      assert(can);
+      done();
+    });
+  });
+
+  it('can brian test views?', function (done) {
+    relations.repos('can %s test %s?', brian, views, function (err, can) {
+      assert.ifError(err);
+      assert(!can);
+      done();
+    });
+  });
+
+  it('remove scientist', function (done) {
+    relations.repos.removeRole('scientist');
+    done();
+  });
+
+  it('can sagar test views?', function (done) {
+    relations.repos('can %s test %s?', sagar, views, function (err, can) {
+      assert(err);
+      assert.equal(err.message, 'verb not defined: "test"');
+      done();
+    });
+  });
 }

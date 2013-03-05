@@ -39,11 +39,11 @@ store.on('revocation', function (cmd, cb) {
 store.on('verb-question', function (cmd, cb) {
   var subject = initSubject(cmd);
   var can = Object.keys(subject.roles).some(function (role) {
-    return ~cmd.ctx.verbs[cmd.verb].indexOf(role);
+    return cmd.ctx.verbs[cmd.verb] && ~cmd.ctx.verbs[cmd.verb].indexOf(role);
   });
   if (!can && cmd.object && subject.objects[cmd.object]) {
     can = Object.keys(subject.objects[cmd.object]).some(function (role) {
-      return ~cmd.ctx.verbs[cmd.verb].indexOf(role);
+      return cmd.ctx.verbs[cmd.verb] && ~cmd.ctx.verbs[cmd.verb].indexOf(role);
     });
   }
   cb(null, can);
@@ -64,7 +64,7 @@ store.on('verb-request', function (cmd, cb) {
   var subject = initSubject(cmd);
   cb(null, Object.keys(subject.objects).filter(function (k) {
     return Object.keys(subject.objects[k]).some(function (role) {
-      return ~cmd.ctx.verbs[cmd.verb].indexOf(role);
+      return cmd.ctx.verbs[cmd.verb] && ~cmd.ctx.verbs[cmd.verb].indexOf(role);
     });
   }));
 });
@@ -82,7 +82,7 @@ store.on('verb-subject-request', function (cmd, cb) {
     subject = contexts[cmd.ctx.name][subject];
     if (!subject.objects[cmd.object]) return false;
     return Object.keys(subject.objects[cmd.object]).some(function (role) {
-      return ~cmd.ctx.verbs[cmd.verb].indexOf(role);
+      return cmd.ctx.verbs[cmd.verb] && ~cmd.ctx.verbs[cmd.verb].indexOf(role);
     });
   }));
 });

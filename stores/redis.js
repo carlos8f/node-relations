@@ -36,7 +36,7 @@ store.on('verb-question', function (cmd, cb) {
       if (err) return cb(err);
       if (!roles) roles = []; 
       var can = roles.some(function (role) {
-        return ~cmd.ctx.verbs[cmd.verb].indexOf(role);
+        return cmd.ctx.verbs[cmd.verb] && ~cmd.ctx.verbs[cmd.verb].indexOf(role);
       });
       if (can || !cmd.object) return cb(null, can);
       else {
@@ -75,7 +75,7 @@ store.on('verb-request', function (cmd, cb) {
         var object = key.split(':').pop();
         if (err || !roles || object == all) return cb_(err);
         cb_(null, roles.some(function (role) {
-          return ~cmd.ctx.verbs[cmd.verb].indexOf(role);
+          return cmd.ctx.verbs[cmd.verb] && ~cmd.ctx.verbs[cmd.verb].indexOf(role);
         }) ? object : null);
       });
     }, function (err, objects) {
@@ -123,7 +123,7 @@ store.on('verb-subject-request', function (cmd, cb) {
         var subject = key.split(':').slice(2, 3)[0];
         if (err ) return cb_(err);
         cb_(null, roles.some(function (role) {
-          return ~cmd.ctx.verbs[cmd.verb].indexOf(role);
+          return cmd.ctx.verbs[cmd.verb] && ~cmd.ctx.verbs[cmd.verb].indexOf(role);
         }) ? subject : null);
       });
     }, function (err, subjects) {

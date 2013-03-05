@@ -15,6 +15,11 @@ function copy (obj) {
 function Context (name, structure) {
   this.name = name;
   this.roles = copy(structure);
+  this.update();
+}
+module.exports = Context;
+
+Context.prototype.update = function () {
   var ctx = this;
   this.verbs = Object.keys(ctx.roles).reduce(function (verbs, role) {
     ctx.roles[role].forEach(function (verb) {
@@ -25,5 +30,23 @@ function Context (name, structure) {
     });
     return verbs;
   }, {});
-}
-module.exports = Context;
+};
+
+Context.prototype.updateRole = function (name, verbs) {
+  this.roles[name] = copy(verbs);
+  this.update();
+};
+
+Context.prototype.addRole = function (name, verbs) {
+  if (typeof this.roles[name] !== 'undefined') {
+    var err = new Error('role already defined: ' + name);
+    err.code = 'ER_DUP_ROLE';
+    throw err;
+  }
+  this.updateRole(name, verbs);
+};
+
+Context.prototype.removeRole = function (name) {
+  delete this.roles[name];
+  this.update();
+};

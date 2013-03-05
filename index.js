@@ -8,7 +8,7 @@ relations.define = function (name, structure) {
   relations[name] = function () {
     var args = [].slice.call(arguments);
     var str = args.shift();
-    var str, named, unnamed, fn;
+    var str, named, unnamed, fn, raised = false;
     do {
       var arg = args.shift();
       if (Array.isArray(arg)) {
@@ -31,6 +31,8 @@ relations.define = function (name, structure) {
     } while (args.length);
 
     function raiseErr (err) {
+      if (raised) return;
+      raised = true;
       if (typeof err === 'string') err = new Error(err);
       if (fn) return fn(err);
       throw err;
@@ -87,9 +89,15 @@ relations.define = function (name, structure) {
       }
     });
 
+    if (raised) return;
+
     cmd.ctx = ctx;
     queue(cmd);
   };
+
+  ['addRole', 'updateRole', 'removeRole'].forEach(function (method) {
+    relations[name][method] = ctx[method].bind(ctx);
+  });
 };
 
 relations.stores = {

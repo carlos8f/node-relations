@@ -14,7 +14,7 @@ function copy (obj) {
 
 function Context (name, structure) {
   this.name = name;
-  this.roles = copy(structure);
+  this.roles = copy(structure) || {};
   this.update();
 }
 module.exports = Context;

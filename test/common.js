@@ -17,11 +17,10 @@ doBasicTest = function (store, options) {
     if (store) {
       relations.use(relations.stores[store], options);
     }
-    relations.define('repos', {
-      owner: ['pull', 'push', 'administrate'],
-      collaborator: ['pull', 'push'],
-      watcher: ['pull']
-    });
+    relations.define('repos');
+    relations.repos.addRole('owner', ['pull', 'push', 'administrate']);
+    relations.repos.addRole('collaborator', ['pull', 'push']);
+    relations.repos.addRole('watcher', ['pull']);
 
     relations.repos('%s is the owner of %s', carlos, buffet);
     relations.repos('%s is a collaborator of %s', carlos, views);

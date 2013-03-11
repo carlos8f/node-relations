@@ -130,7 +130,7 @@ function queue (fn) {
 }
 
 function doQueue () {
-  process.nextTick(function () {
+  function _doQueue () {
     if (!relations.store) {
       relations.use(relations.stores.memory);
     }
@@ -139,5 +139,12 @@ function doQueue () {
       relations.store.invoke(cmd.type, cmd, cmd.fn);
     }
     if (relations._queue.length) doQueue();
-  });
+  }
+
+  if (typeof setImmediate !== 'undefined') {
+    setImmediate(_doQueue);
+  }
+  else {
+    process.nextTick(_doQueue);
+  }
 }

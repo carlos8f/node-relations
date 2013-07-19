@@ -50,3 +50,10 @@ Context.prototype.removeRole = function (name) {
   delete this.roles[name];
   this.update();
 };
+
+Context.prototype.getRoles = function (verb) {
+  var ctx = this;
+  return Object.keys(ctx.roles).filter(function (role) {
+    return (ctx.roles[role].indexOf(verb) >= 0);
+  });
+};

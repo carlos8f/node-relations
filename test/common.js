@@ -207,4 +207,12 @@ doBasicTest = function (store, options) {
       done();
     });
   });
+
+  it('what roles can absquatulate?', function (done) {
+    var roles = relations.repos.getRoles('absquatulate');
+    assert(roles);
+    assert.equal(roles.length, 1);
+    assert.equal(roles[0], 'owner');
+    done();
+  });
 }

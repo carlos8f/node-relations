@@ -95,7 +95,7 @@ relations.define = function (name, structure) {
     queue(cmd);
   };
 
-  ['addRole', 'updateRole', 'removeRole'].forEach(function (method) {
+  ['addRole', 'updateRole', 'removeRole', 'getRoles'].forEach(function (method) {
     relations[name][method] = ctx[method].bind(ctx);
   });
 };

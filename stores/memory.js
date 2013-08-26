@@ -95,3 +95,11 @@ store.on('role-subject-request', function (cmd, cb) {
     return subject.objects[cmd.object][cmd.role];
   }));
 });
+
+store.on('object-verb-request', function (cmd, cb) {
+  var subject = initSubject(cmd)
+    , object = subject.objects[cmd.object] || {};
+  cb(null, Object.keys(object).reduce(function (verbs, role) {
+    return verbs.concat( cmd.ctx.roles[role] || [] );
+  }, []));
+});

@@ -46,6 +46,7 @@ module.exports = (function(){
         "RoleRequest": parse_RoleRequest,
         "VerbSubjectRequest": parse_VerbSubjectRequest,
         "RoleSubjectRequest": parse_RoleSubjectRequest,
+        "ObjectVerbRequest": parse_ObjectVerbRequest,
         "Token": parse_Token,
         "NamedToken": parse_NamedToken,
         "UnnamedToken": parse_UnnamedToken,
@@ -118,19 +119,22 @@ module.exports = (function(){
         var pos0;
         
         pos0 = pos;
-        result0 = parse_RoleSubjectRequest();
+        result0 = parse_ObjectVerbRequest();
         if (result0 === null) {
-          result0 = parse_VerbSubjectRequest();
+          result0 = parse_RoleSubjectRequest();
           if (result0 === null) {
-            result0 = parse_RoleQuestion();
+            result0 = parse_VerbSubjectRequest();
             if (result0 === null) {
-              result0 = parse_RoleRequest();
+              result0 = parse_RoleQuestion();
               if (result0 === null) {
-                result0 = parse_Declaration();
+                result0 = parse_RoleRequest();
                 if (result0 === null) {
-                  result0 = parse_VerbRequest();
+                  result0 = parse_Declaration();
                   if (result0 === null) {
-                    result0 = parse_VerbQuestion();
+                    result0 = parse_VerbRequest();
+                    if (result0 === null) {
+                      result0 = parse_VerbQuestion();
+                    }
                   }
                 }
               }
@@ -982,6 +986,108 @@ module.exports = (function(){
         return result0;
       }
       
+      function parse_ObjectVerbRequest() {
+        var result0, result1, result2, result3, result4, result5, result6;
+        var pos0, pos1;
+        
+        reportFailures++;
+        pos0 = pos;
+        pos1 = pos;
+        if (input.substr(pos, 17).toLowerCase() === "what actions can ") {
+          result0 = input.substr(pos, 17);
+          pos += 17;
+        } else {
+          result0 = null;
+          if (reportFailures === 0) {
+            matchFailed("\"what actions can \"");
+          }
+        }
+        if (result0 !== null) {
+          result1 = parse_Token();
+          if (result1 !== null) {
+            if (input.substr(pos, 3).toLowerCase() === " do") {
+              result2 = input.substr(pos, 3);
+              pos += 3;
+            } else {
+              result2 = null;
+              if (reportFailures === 0) {
+                matchFailed("\" do\"");
+              }
+            }
+            if (result2 !== null) {
+              result3 = parse_Preposition();
+              if (result3 !== null) {
+                if (input.charCodeAt(pos) === 32) {
+                  result4 = " ";
+                  pos++;
+                } else {
+                  result4 = null;
+                  if (reportFailures === 0) {
+                    matchFailed("\" \"");
+                  }
+                }
+                if (result4 !== null) {
+                  result5 = parse_Token();
+                  if (result5 !== null) {
+                    if (input.charCodeAt(pos) === 63) {
+                      result6 = "?";
+                      pos++;
+                    } else {
+                      result6 = null;
+                      if (reportFailures === 0) {
+                        matchFailed("\"?\"");
+                      }
+                    }
+                    result6 = result6 !== null ? result6 : "";
+                    if (result6 !== null) {
+                      result0 = [result0, result1, result2, result3, result4, result5, result6];
+                    } else {
+                      result0 = null;
+                      pos = pos1;
+                    }
+                  } else {
+                    result0 = null;
+                    pos = pos1;
+                  }
+                } else {
+                  result0 = null;
+                  pos = pos1;
+                }
+              } else {
+                result0 = null;
+                pos = pos1;
+              }
+            } else {
+              result0 = null;
+              pos = pos1;
+            }
+          } else {
+            result0 = null;
+            pos = pos1;
+          }
+        } else {
+          result0 = null;
+          pos = pos1;
+        }
+        if (result0 !== null) {
+          result0 = (function(offset, subject, object) {
+            return {
+              type: "object-verb-request",
+              subject: subject,
+              object: object
+            }
+          })(pos0, result0[1], result0[5]);
+        }
+        if (result0 === null) {
+          pos = pos0;
+        }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("object verb request");
+        }
+        return result0;
+      }
+      
       function parse_Token() {
         var result0;
         
@@ -1659,6 +1765,17 @@ module.exports = (function(){
                   result1 = null;
                   if (reportFailures === 0) {
                     matchFailed("\"in\"");
+                  }
+                }
+                if (result1 === null) {
+                  if (input.substr(pos, 4).toLowerCase() === "with") {
+                    result1 = input.substr(pos, 4);
+                    pos += 4;
+                  } else {
+                    result1 = null;
+                    if (reportFailures === 0) {
+                      matchFailed("\"with\"");
+                    }
                   }
                 }
               }

@@ -4,7 +4,8 @@
 
 start
   = ret:(
-  RoleSubjectRequest
+  ObjectVerbRequest
+  / RoleSubjectRequest
   / VerbSubjectRequest
   / RoleQuestion
   / RoleRequest
@@ -92,6 +93,15 @@ RoleSubjectRequest "role subject request"
     }
   }
 
+ObjectVerbRequest "object verb request"
+  = "what actions can "i subject:Token " do"i Preposition " " object:Token "?"? {
+    return {
+      type: "object-verb-request",
+      subject: subject,
+      object: object
+    }
+  }
+
 Token "token"
   = NamedToken / UnnamedToken / Literal
 
@@ -153,4 +163,4 @@ Negative "negative declaration"
   }
 
 Preposition "preposition"
-  = " " ( "of"i / "to"i / "from"i / "in"i )
+  = " " ( "of"i / "to"i / "from"i / "in"i / "with"i )

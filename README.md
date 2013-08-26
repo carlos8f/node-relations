@@ -84,7 +84,7 @@ relations.repos('%s is a watcher.', 'Brian');
 The syntax for a **declaration** consists of:
 
 ```
-<subject> is [ a / an / the ] <role> [ [ of / to / from / in ] <object> ] [.]
+<subject> is [ a / an / the ] <role> [ [ of / to / from / in / with ] <object> ] [.]
 ```
 
 Verb question
@@ -111,7 +111,7 @@ relations.repos('Can %s push to buffet?', 'Brian', function (err, can) {
 The syntax for an **verb question** consists of:
 
 ```
-( Can | can ) <subject> <verb> [ [ of / to / from / in ] <object> ] [?]
+( Can | can ) <subject> <verb> [ [ of / to / from / in / with ] <object> ] [?]
 ```
 
 Role question
@@ -138,7 +138,7 @@ relations.repos('Is %s a %s?', 'Brian', 'watcher', function (err, is) {
 The syntax for a **role question** consists of:
 
 ```
-( Is | is ) <subject> [ a / an / the ] <role> [ [ of / to / from / in ] <object> ] [?]
+( Is | is ) <subject> [ a / an / the ] <role> [ [ of / to / from / in / with ] <object> ] [?]
 ```
 
 Verb request
@@ -158,7 +158,7 @@ relations.repos('What can %s pull from?', 'Carlos', function (err, repos) {
 The syntax for a **verb request** consists of:
 
 ```
-( What | what ) can <subject> <verb> [ of / to / from / in ] [?]
+( What | what ) can <subject> <verb> [ of / to / from / in / with ] [?]
 ```
 
 Role request
@@ -177,7 +177,7 @@ relations.repos('What is %s the owner of?', 'Carlos', function (err, repos) {
 The syntax for a **role request** consists of:
 
 ```
-( What | what ) is <subject> [ a / an / the ] <role> [ of / to / from / in ] [?]
+( What | what ) is <subject> [ a / an / the ] <role> [ of / to / from / in / with ] [?]
 ```
 
 Verb subject request
@@ -194,7 +194,7 @@ relations.repos('Who can pull from %s?', 'buffet', function (err, users) {
 ### Syntax
 
 ```
-( Who | who ) can <verb> [ of / to / from / in ] <object> [?]
+( Who | who ) can <verb> [ of / to / from / in / with ] <object> [?]
 ```
 
 Role subject request
@@ -211,7 +211,24 @@ relations.repos('Who is the owner of %s?', 'buffet', function (err, users) {
 ### Syntax
 
 ```
-( Who | who ) is [ a / an / the ] <role> [ of / to / from / in ] <object> [?]
+( Who | who ) is [ a / an / the ] <role> [ of / to / from / in / with ] <object> [?]
+```
+
+Object verb request
+---------------------------
+
+To request an array of verbs a subject can perform on an object:
+
+```js
+relations.repos('What actions can %s do with %s?', 'Carlos', 'buffet', function (err, verbs) {
+  // verbs = ['pull', 'push', 'administrate']
+});
+```
+
+### Syntax
+
+```
+What can <subject> do [ of / to / from / in / with ] <object> [?]
 ```
 
 Revocation
@@ -226,7 +243,7 @@ relations.repos('%s is not the owner of %s', 'Carlos', 'buffet');
 ### Syntax
 
 ```
-<subject> ( is not | isn't ) [ a / an / the ] <role> [ [ of / to / from / in ] <object> ] [.]
+<subject> ( is not | isn't ) [ a / an / the ] <role> [ [ of / to / from / in / with ] <object> ] [.]
 ```
 
 Pluggable data store
@@ -345,6 +362,15 @@ the result. `cmd` will be an object containing the properties:
 - ctx - context object
 - role
 - object
+
+### `object-verb-request` (cmd, cb)
+
+Respond to a object verb request and call `cb(err, /* array */ verbs)` with
+the result. `cmd` will be an object containing the properties:
+
+- ctx - context object
+- object
+- subject
 
 ### `reset` (cb)
 

@@ -110,6 +110,18 @@ store.on('role-subject-request', function (cmd, cb) {
     });
 });
 
+store.on('object-verb-request', function (cmd, cb) {
+  client.query("SELECT `role` FROM `relations`"
+  + " WHERE `context` = ?"
+  + " AND `object` = ?"
+  + " AND `subject` = ?", [cmd.ctx.name, cmd.object, cmd.subject], function (err, rows) {
+    if (err) return cb(err);
+    cb(null, rows.reduce(function (verbs, row) {
+      return verbs.concat( cmd.ctx.roles[row.role] || [] );
+    }, []));
+  });
+});
+
 store.on('reset', function (cb) {
   client.query("DROP TABLE IF EXISTS `relations`", cb);
 });

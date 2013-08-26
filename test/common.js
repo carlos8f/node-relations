@@ -215,4 +215,15 @@ doBasicTest = function (store, options) {
     assert.equal(roles[0], 'owner');
     done();
   });
+
+  it('what actions can carlos do with buffet', function (done) {
+    relations.repos('what actions can %s do with %s?', carlos, buffet, function (err, verbs) {
+      assert.ifError(err);
+      assert.equal(verbs.length, 4);
+      assert.equal(verbs[0], 'pull');
+      assert.equal(verbs[1], 'push');
+      assert.equal(verbs[2], 'administrate');
+      done();
+    });
+  });
 }

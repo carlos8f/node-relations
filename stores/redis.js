@@ -158,6 +158,16 @@ store.on('role-subject-request', function (cmd, cb) {
   });
 });
 
+store.on('object-verb-request', function (cmd, cb) {
+  client.SMEMBERS(getKey(cmd), function (err, roles) {
+    if (err) return cb(err);
+    if (!roles) roles = [];
+    cb(null, roles.reduce(function (verbs, role) {
+      return verbs.concat( cmd.ctx.roles[role] || [] );
+    }, []));
+  });
+});
+
 store.on('reset', function (cb) {
   client.KEYS('relations:*', function (err, keys) {
     if (err || !keys) return cb(err);

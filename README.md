@@ -215,7 +215,7 @@ relations.repos('Who is the owner of %s?', 'buffet', function (err, users) {
 ```
 
 Object verb request
----------------------------
+-------------------
 
 To request an array of verbs a subject can perform on an object:
 
@@ -229,6 +229,48 @@ relations.repos('What actions can %s do with %s?', 'Carlos', 'buffet', function 
 
 ```
 What actions can <subject> do [ of / to / from / in / with ] <object> [?]
+```
+
+Object-Role map request
+-----------------------
+
+To get a map of object->role pairs for a subject:
+
+```js
+relations.repos('Describe what %s can do', 'Carlos', function (err, map) {
+  // map = { '': [ 'watcher' ],
+             'buffet': [ 'owner' ] }
+});
+```
+
+### Syntax
+
+```
+[ Describe / detail / explain / get ] what <subject> can do [.]
+```
+
+Subject-Role map request
+-----------------------
+
+To get a map of subject->role pairs, optionally pertaining to an object:
+
+```js
+relations.repos('Get who can act', function (err, map) {
+  // map = { 'carlos': [ 'watcher' ],
+             'brian': [ 'watcher' ] }
+});
+```
+
+```js
+relations.repos('Explain who can act on %s', 'buffet', function (err, map) {
+  // map = { 'carlos': [ 'owner' ] }
+});
+```
+
+### Syntax
+
+```
+[ Describe / detail / explain / get ] who can act [ on <object> ] [.]
 ```
 
 Revocation
@@ -365,12 +407,28 @@ the result. `cmd` will be an object containing the properties:
 
 ### `object-verb-request` (cmd, cb)
 
-Respond to a object verb request and call `cb(err, /* array */ verbs)` with
+Respond to an object verb request and call `cb(err, /* array */ verbs)` with
 the result. `cmd` will be an object containing the properties:
 
 - ctx - context object
 - object
 - subject
+
+### `object-role-map-request` (cmd, cb)
+
+Respond to an object-role map request and call `cb(err, /* object */ map)` with
+the result. `cmd` will be an object containing the properties:
+
+- ctx - context object
+- subject
+
+### `subject-role-map-request` (cmd, cb)
+
+Respond to a subject-role map request and call `cb(err, /* object */ map)` with
+the result. `cmd` will be an object containing the properties:
+
+- ctx - context object
+- object (optional)
 
 ### `reset` (cb)
 

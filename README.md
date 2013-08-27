@@ -228,7 +228,7 @@ relations.repos('What actions can %s do with %s?', 'Carlos', 'buffet', function 
 ### Syntax
 
 ```
-What can <subject> do [ of / to / from / in / with ] <object> [?]
+What actions can <subject> do [ of / to / from / in / with ] <object> [?]
 ```
 
 Revocation

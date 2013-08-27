@@ -122,6 +122,32 @@ store.on('object-verb-request', function (cmd, cb) {
   });
 });
 
+store.on('object-role-map-request', function (cmd, cb) {
+  client.query("SELECT `object`, `role` FROM `relations`"
+  + " WHERE `context` = ?"
+  + " AND `subject` = ?", [cmd.ctx.name, cmd.subject], function (err, rows) {
+    if (err) return cb(err);
+    cb(null, rows.reduce(function (map, row) {
+      map[row.object] || (map[row.object] = [])
+      map[row.object].push(row.role);
+      return map;
+    }, {}));
+  });
+});
+
+store.on('subject-role-map-request', function (cmd, cb) {
+  client.query("SELECT `subject`, `role` FROM `relations`"
+  + " WHERE `context` = ?"
+  + " AND `object` = ?", [cmd.ctx.name, cmd.object || ''], function (err, rows) {
+    if (err) return cb(err);
+    cb(null, rows.reduce(function (map, row) {
+      map[row.subject] || (map[row.subject] = [])
+      map[row.subject].push(row.role);
+      return map;
+    }, {}));
+  });
+});
+
 store.on('reset', function (cb) {
   client.query("DROP TABLE IF EXISTS `relations`", cb);
 });

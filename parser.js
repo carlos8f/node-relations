@@ -131,9 +131,12 @@ module.exports = (function(){
                 if (result0 === null) {
                   result0 = parse_Declaration();
                   if (result0 === null) {
-                    result0 = parse_VerbRequest();
+                    result0 = parse_Revocation();
                     if (result0 === null) {
-                      result0 = parse_VerbQuestion();
+                      result0 = parse_VerbRequest();
+                      if (result0 === null) {
+                        result0 = parse_VerbQuestion();
+                      }
                     }
                   }
                 }

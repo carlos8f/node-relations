@@ -10,6 +10,7 @@ start
   / RoleQuestion
   / RoleRequest
   / Declaration
+  / Revocation
   / VerbRequest
   / VerbQuestion
   ) {

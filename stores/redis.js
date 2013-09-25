@@ -7,13 +7,14 @@ store.on('init', function (options, cb) {
     return cb(new Error('must pass a node_redis client in options.client to use redis store'));
   }
   client = store._client = options.client;
+  store._prefix = options.prefix || 'relations';
   if (client.connected) return cb();
   else client.once('ready', cb);
 });
 
 function getKey (cmd) {
   return [
-    'relations',
+    store._prefix,
     cmd.ctx.name,
     cmd.subject,
     cmd.object || all
@@ -34,7 +35,7 @@ store.on('verb-question', function (cmd, cb) {
   (function doCheck () {
     client.SMEMBERS(getKey(cmd), function (err, roles) {
       if (err) return cb(err);
-      if (!roles) roles = []; 
+      if (!roles) roles = [];
       var can = roles.some(function (role) {
         return cmd.ctx.verbs[cmd.verb] && ~cmd.ctx.verbs[cmd.verb].indexOf(role);
       });
@@ -64,7 +65,7 @@ store.on('role-question', function (cmd, cb) {
 
 store.on('verb-request', function (cmd, cb) {
   client.KEYS([
-    'relations',
+    store._prefix,
     cmd.ctx.name,
     cmd.subject,
     '*'
@@ -89,7 +90,7 @@ store.on('verb-request', function (cmd, cb) {
 
 store.on('role-request', function (cmd, cb) {
   client.KEYS([
-    'relations',
+    store._prefix,
     cmd.ctx.name,
     cmd.subject,
     '*'
@@ -112,7 +113,7 @@ store.on('role-request', function (cmd, cb) {
 
 store.on('verb-subject-request', function (cmd, cb) {
   client.KEYS([
-    'relations',
+    store._prefix,
     cmd.ctx.name,
     '*',
     cmd.object
@@ -137,7 +138,7 @@ store.on('verb-subject-request', function (cmd, cb) {
 
 store.on('role-subject-request', function (cmd, cb) {
   client.KEYS([
-    'relations',
+    store._prefix,
     cmd.ctx.name,
     '*',
     cmd.object
@@ -169,7 +170,7 @@ store.on('object-verb-request', function (cmd, cb) {
 });
 
 store.on('reset', function (cb) {
-  client.KEYS('relations:*', function (err, keys) {
+  client.KEYS(store._prefix +':*', function (err, keys) {
     if (err || !keys) return cb(err);
     async.map(keys, client.DEL.bind(client), cb);
   });

@@ -250,7 +250,7 @@ Pluggable data store
 --------------------
 
 **relations** uses a memory store out-of-the-box, which only works with a single
-node processes and has no persistence. Two data stores are also provided 
+node processes and has no persistence. Two data stores are also provided
 however: Redis and MySQL.
 
 ### Redis store
@@ -262,7 +262,10 @@ To use the redis store, your app must make a
 var relations = require('relations')
   , redis = require('redis')
 
-relations.use(relations.stores.redis, {client: redis.createClient()});
+relations.use(relations.stores.redis, {
+  client: redis.createClient(),
+  prefix: 'optional-key-prefix'
+});
 ```
 
 ### MySQL store

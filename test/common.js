@@ -226,4 +226,12 @@ doBasicTest = function (store, options) {
       done();
     });
   });
+
+  it('who can administrate buffet', function (done) {
+    relations.repos('who can administrate %s', buffet, function (err, list) {
+      assert.ifError(err);
+      assert.deepEqual(list, [carlos]);
+      done();
+    });
+  });
 }

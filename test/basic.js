@@ -9,5 +9,5 @@ describe('mysql store', function () {
 
 describe('redis store', function () {
   var redis = require('redis');
-  doBasicTest('redis', {client: redis.createClient(), prefix: 'relations-test'});
+  doBasicTest('redis', {client: redis.createClient(), prefix: 'relations-test:test-prefix'});
 });

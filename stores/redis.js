@@ -121,7 +121,13 @@ store.on('verb-subject-request', function (cmd, cb) {
     if (err || !keys) return cb(err, []);
     async.map(keys, function (key, cb_) {
       client.SMEMBERS(key, function (err, roles) {
-        var subject = key.split(':').slice(2, 3)[0];
+        var pattern = new RegExp([
+          store._prefix,
+          cmd.ctx.name,
+          '([^:]+)',
+          cmd.object
+        ].join(':') + '$');
+        var subject = key.match(pattern)[1];
         if (err ) return cb_(err);
         cb_(null, roles.some(function (role) {
           return cmd.ctx.verbs[cmd.verb] && ~cmd.ctx.verbs[cmd.verb].indexOf(role);
@@ -146,7 +152,13 @@ store.on('role-subject-request', function (cmd, cb) {
     if (err || !keys) return cb(err, []);
     async.map(keys, function (key, cb_) {
       client.SMEMBERS(key, function (err, roles) {
-        var subject = key.split(':').slice(2, 3)[0];
+        var pattern = new RegExp([
+          store._prefix,
+          cmd.ctx.name,
+          '([^:]+)',
+          cmd.object
+        ].join(':') + '$');
+        var subject = key.match(pattern)[1];
         if (err) return cb_(err);
         cb_(null, ~roles.indexOf(cmd.role) ? subject : null);
       });

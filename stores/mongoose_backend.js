@@ -86,12 +86,12 @@ store.on('verb-request', function (cmd, cb) {
     RelationModel.find({
         context: cmd.ctx.name,
         subject: cmd.subject,
-        role: cmd.ctx.verbs[cmd.verb],
+        role: { $in: cmd.ctx.verbs[cmd.verb] },
         object: { $ne: '' }
     }, 'object', function(err, relations) {
         if(err) return cb(err);
 
-        cb(null, relation.map(function(relation) { return relation.object; }));
+        cb(null, relations.map(function(relation) { return relation.object; }));
     });
 });
 
@@ -143,6 +143,22 @@ store.on('object-verb-request', function (cmd, cb) {
         cb(null, relations.reduce(function (verbs, row) {
             return verbs.concat( cmd.ctx.roles[row.role] || [] );
         }, []));
+    });
+});
+
+store.on('object-role-request', function(cmd, cb) {
+    RelationModel.find({
+        context: cmd.ctx.name,
+        object: cmd.object,
+        subject: cmd.subject
+    }, 'role', function(err, relations) {
+        if(err) return cb(err);
+
+        var roles = relations.map(function (row) {
+            return ( row.role );
+        });
+
+        cb(null, roles);
     });
 });
 

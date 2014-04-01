@@ -14,6 +14,6 @@ describe('redis store', function () {
 
 describe('mongoose store', function () {
     var mongoose = require('mongoose');
-    mongoose.connect('mongodb://95.168.218.4/ripple_engine_t');
+    mongoose.connect('mongodb://127.0.0.1/relations_test');
     doBasicTest('mongoose');
 });

@@ -9,7 +9,7 @@ describe('mysql store', function () {
 
 describe('redis store', function () {
   var redis = require('redis');
-  doBasicTest('redis', {client: redis.createClient(6379, '95.168.218.4'), prefix: 'relations-test:test-prefix'});
+  doBasicTest('redis', {client: redis.createClient(), prefix: 'relations-test:test-prefix'});
 });
 
 describe('mongoose store', function () {

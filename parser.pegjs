@@ -5,6 +5,7 @@
 start
   = ret:(
   ObjectVerbRequest
+  / ObjectRoleRequest
   / RoleSubjectRequest
   / VerbSubjectRequest
   / RoleQuestion
@@ -98,6 +99,15 @@ ObjectVerbRequest "object verb request"
   = "what actions can "i subject:Token " do"i Preposition " " object:Token "?"? {
     return {
       type: "object-verb-request",
+      subject: subject,
+      object: object
+    }
+  }
+
+ObjectRoleRequest "object role request"
+  = "what roles does "i subject:Token " have"i Preposition " " object:Token "?"? {
+    return {
+      type: "object-role-request",
       subject: subject,
       object: object
     }

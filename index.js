@@ -103,7 +103,8 @@ relations.define = function (name, structure) {
 relations.stores = {
   memory: require('./stores/memory'),
   mysql: require('./stores/mysql'),
-  redis: require('./stores/redis')
+  redis: require('./stores/redis'),
+  mongoose: require('./stores/mongoose_backend')
 };
 
 relations.use = function (store, options) {

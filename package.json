@@ -5,7 +5,8 @@
   "main": "index.js",
   "dependencies": {
     "eventflow": "0.0.6",
-    "async": "~0.1.22"
+    "async": "~0.1.22",
+    "mongoose": "~3.8.1"
   },
   "devDependencies": {
     "mocha": "*",

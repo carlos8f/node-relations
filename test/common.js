@@ -28,6 +28,7 @@ doBasicTest = function (store, options) {
     relations.repos(':user is the "owner" of :repo', {user: brian, repo: views});
     relations.repos('%s is a watcher', brian);
     relations.repos('%s is a watcher', sagar);
+
   });
 
   after(relations.tearDown);
@@ -110,6 +111,14 @@ doBasicTest = function (store, options) {
       assert.deepEqual(list, [views]);
       done();
     });
+  });
+
+  it('what roles does brian have in views', function (done) {
+      relations.repos('what roles does %s have in %s', brian, views, function (err, list) {
+          assert.ifError(err);
+          assert.deepEqual(list.sort(), [ 'owner' ]);
+          done();
+      });
   });
 
   it('who is the owner of views?', function (done) {

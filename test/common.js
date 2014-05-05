@@ -13,6 +13,14 @@ doBasicTest = function (store, options) {
   var buffet = 'carlos8f/node-buffet'
     , views = 'cpsubrian/node-views'
 
+  // Sort a map's values array so that we can use assert.deepEquals
+  var sortedMap = function (map) {
+    return Object.keys(map).reduce(function (sorted, key) {
+      sorted[key] = map[key].sort();
+      return sorted;
+    }, {});
+  }
+
   before(function () {
     if (store) {
       relations.use(relations.stores[store], options);
@@ -223,6 +231,7 @@ doBasicTest = function (store, options) {
       assert.equal(verbs[0], 'pull');
       assert.equal(verbs[1], 'push');
       assert.equal(verbs[2], 'administrate');
+      assert.equal(verbs[3], 'absquatulate');
       done();
     });
   });
@@ -234,4 +243,35 @@ doBasicTest = function (store, options) {
       done();
     });
   });
-}
+
+  it('describe what carlos can do', function (done) {
+    relations.repos('describe what %s can do', carlos, function (err, map) {
+      assert.ifError(err);
+      assert.deepEqual(map, {
+        '': [ 'watcher' ],
+        'carlos8f/node-buffet': [ 'owner' ] });
+      done();
+    });
+  });
+
+  it('explain who can act on buffet', function (done) {
+    relations.repos('explain who can act on %s', buffet, function (err, map) {
+      assert.ifError(err);
+      assert.deepEqual(map, {
+        'carlos8f': [ 'owner' ] });
+      done();
+    });
+  });
+
+  it('get who can act', function (done) {
+    relations.repos('detail who can act', function (err, map) {
+      assert.ifError(err);
+      assert.deepEqual(sortedMap(map), {
+        'carlos8f': [ 'watcher' ],
+        'cpsubrian': [ 'watcher' ],
+        'astrosag_ngc4414': [ 'scientist', 'watcher' ] });
+      done();
+    });
+  });
+
+};

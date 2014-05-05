@@ -183,7 +183,7 @@ store.on('object-verb-request', function (cmd, cb) {
 
 store.on('object-role-map-request', function (cmd, cb) {
   client.KEYS([
-    'relations',
+    store._prefix,
     cmd.ctx.name,
     cmd.subject,
     '*'
@@ -202,14 +202,14 @@ store.on('object-role-map-request', function (cmd, cb) {
 
 store.on('subject-role-map-request', function (cmd, cb) {
   client.KEYS([
-    'relations',
+    store._prefix,
     cmd.ctx.name,
     '*',
     cmd.object || all
   ].join(':'), function (err, keys) {
     if (err || !keys) return cb(err, {});
     async.parallel(keys.reduce(function (map, key) {
-      map[key.split(':').slice(2, 3)[0]] = function (cb_) {
+      map[key.split(':').slice(3, 4)[0]] = function (cb_) {
         client.SMEMBERS(key, cb_);
       };
       return map;

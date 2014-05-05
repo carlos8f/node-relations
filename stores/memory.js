@@ -103,3 +103,39 @@ store.on('object-verb-request', function (cmd, cb) {
     return verbs.concat( cmd.ctx.roles[role] || [] );
   }, []));
 });
+
+store.on('object-role-map-request', function (cmd, cb) {
+  var subject = initSubject(cmd);
+  var map = {};
+  map[''] = Object.keys(subject.roles || {}).filter(function (role) {
+    return subject.roles[role];
+  });
+  cb(null, Object.keys(subject.objects || {}).reduce(function (map, object) {
+    var roles = Object.keys(subject.objects[object] || {}).filter(function (role) {
+      return subject.objects[object][role];
+    });
+    if (roles.length) map[object] = roles;
+    return map;
+  }, map));
+});
+
+store.on('subject-role-map-request', function (cmd, cb) {
+  var subjects = Object.keys(contexts[cmd.ctx.name] || {});
+  cb(null, subjects.reduce(function (map, subjectName) {
+    var subject = initSubject({ subject: subjectName, ctx: cmd.ctx })
+      , roles;
+    if (cmd.object) {
+      var object = (subject.objects || {})[cmd.object] || {};
+      roles = Object.keys(object).filter(function (role) {
+        return object[role];
+      });
+    }
+    else {
+      roles = Object.keys(subject.roles || {}).filter(function (role) {
+        return subject.roles[role];
+      });
+    }
+    if (roles.length) map[subjectName] = roles;
+    return map;
+  }, {}));
+});

@@ -181,6 +181,42 @@ store.on('object-verb-request', function (cmd, cb) {
   });
 });
 
+store.on('object-role-map-request', function (cmd, cb) {
+  client.KEYS([
+    'relations',
+    cmd.ctx.name,
+    cmd.subject,
+    '*'
+  ].join(':'), function (err, keys) {
+    if (err || !keys) return cb(err, {});
+    var re = new RegExp( all + '$' );
+    async.parallel(keys.reduce(function (map, key) {
+      var object = re.test(key) ? '' : key.split(':').pop();
+      map[object] = function (cb_) {
+        client.SMEMBERS(key, cb_);
+      };
+      return map;
+    }, {}), cb);
+  });
+});
+
+store.on('subject-role-map-request', function (cmd, cb) {
+  client.KEYS([
+    'relations',
+    cmd.ctx.name,
+    '*',
+    cmd.object || all
+  ].join(':'), function (err, keys) {
+    if (err || !keys) return cb(err, {});
+    async.parallel(keys.reduce(function (map, key) {
+      map[key.split(':').slice(2, 3)[0]] = function (cb_) {
+        client.SMEMBERS(key, cb_);
+      };
+      return map;
+    }, {}), cb);
+  });
+});
+
 store.on('reset', function (cb) {
   client.KEYS(store._prefix +':*', function (err, keys) {
     if (err || !keys) return cb(err);

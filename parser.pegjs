@@ -4,7 +4,9 @@
 
 start
   = ret:(
-  ObjectVerbRequest
+  ObjectRoleMapRequest
+  / SubjectRoleMapRequest
+  / ObjectVerbRequest
   / RoleSubjectRequest
   / VerbSubjectRequest
   / RoleQuestion
@@ -103,6 +105,22 @@ ObjectVerbRequest "object verb request"
     }
   }
 
+ObjectRoleMapRequest "object role map request"
+  = Evaluative " what "i subject:Token " can do" "."? {
+    return {
+      type: "object-role-map-request",
+      subject: subject
+    }
+  }
+
+SubjectRoleMapRequest "subject role map request"
+  = Evaluative " who can act"i " on"i? object:Obj? "."? {
+    return {
+      type: "subject-role-map-request",
+      object: object
+    }
+  }
+
 Token "token"
   = NamedToken / UnnamedToken / Literal
 
@@ -165,3 +183,6 @@ Negative "negative declaration"
 
 Preposition "preposition"
   = " " ( "of"i / "to"i / "from"i / "in"i / "with"i )
+
+Evaluative "evaluative"
+ = ( "describe"i / "detail"i / "explain"i / "get"i )

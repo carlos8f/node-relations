@@ -47,6 +47,8 @@ module.exports = (function(){
         "VerbSubjectRequest": parse_VerbSubjectRequest,
         "RoleSubjectRequest": parse_RoleSubjectRequest,
         "ObjectVerbRequest": parse_ObjectVerbRequest,
+        "ObjectRoleMapRequest": parse_ObjectRoleMapRequest,
+        "SubjectRoleMapRequest": parse_SubjectRoleMapRequest,
         "Token": parse_Token,
         "NamedToken": parse_NamedToken,
         "UnnamedToken": parse_UnnamedToken,
@@ -58,7 +60,8 @@ module.exports = (function(){
         "Positive": parse_Positive,
         "Quantifier": parse_Quantifier,
         "Negative": parse_Negative,
-        "Preposition": parse_Preposition
+        "Preposition": parse_Preposition,
+        "Evaluative": parse_Evaluative
       };
       
       if (startRule !== undefined) {
@@ -119,23 +122,29 @@ module.exports = (function(){
         var pos0;
         
         pos0 = pos;
-        result0 = parse_ObjectVerbRequest();
+        result0 = parse_ObjectRoleMapRequest();
         if (result0 === null) {
-          result0 = parse_RoleSubjectRequest();
+          result0 = parse_SubjectRoleMapRequest();
           if (result0 === null) {
-            result0 = parse_VerbSubjectRequest();
+            result0 = parse_ObjectVerbRequest();
             if (result0 === null) {
-              result0 = parse_RoleQuestion();
+              result0 = parse_RoleSubjectRequest();
               if (result0 === null) {
-                result0 = parse_RoleRequest();
+                result0 = parse_VerbSubjectRequest();
                 if (result0 === null) {
-                  result0 = parse_Declaration();
+                  result0 = parse_RoleQuestion();
                   if (result0 === null) {
-                    result0 = parse_Revocation();
+                    result0 = parse_RoleRequest();
                     if (result0 === null) {
-                      result0 = parse_VerbRequest();
+                      result0 = parse_Declaration();
                       if (result0 === null) {
-                        result0 = parse_VerbQuestion();
+                        result0 = parse_Revocation();
+                        if (result0 === null) {
+                          result0 = parse_VerbRequest();
+                          if (result0 === null) {
+                            result0 = parse_VerbQuestion();
+                          }
+                        }
                       }
                     }
                   }
@@ -1091,6 +1100,170 @@ module.exports = (function(){
         return result0;
       }
       
+      function parse_ObjectRoleMapRequest() {
+        var result0, result1, result2, result3, result4;
+        var pos0, pos1;
+        
+        reportFailures++;
+        pos0 = pos;
+        pos1 = pos;
+        result0 = parse_Evaluative();
+        if (result0 !== null) {
+          if (input.substr(pos, 6).toLowerCase() === " what ") {
+            result1 = input.substr(pos, 6);
+            pos += 6;
+          } else {
+            result1 = null;
+            if (reportFailures === 0) {
+              matchFailed("\" what \"");
+            }
+          }
+          if (result1 !== null) {
+            result2 = parse_Token();
+            if (result2 !== null) {
+              if (input.substr(pos, 7) === " can do") {
+                result3 = " can do";
+                pos += 7;
+              } else {
+                result3 = null;
+                if (reportFailures === 0) {
+                  matchFailed("\" can do\"");
+                }
+              }
+              if (result3 !== null) {
+                if (input.charCodeAt(pos) === 46) {
+                  result4 = ".";
+                  pos++;
+                } else {
+                  result4 = null;
+                  if (reportFailures === 0) {
+                    matchFailed("\".\"");
+                  }
+                }
+                result4 = result4 !== null ? result4 : "";
+                if (result4 !== null) {
+                  result0 = [result0, result1, result2, result3, result4];
+                } else {
+                  result0 = null;
+                  pos = pos1;
+                }
+              } else {
+                result0 = null;
+                pos = pos1;
+              }
+            } else {
+              result0 = null;
+              pos = pos1;
+            }
+          } else {
+            result0 = null;
+            pos = pos1;
+          }
+        } else {
+          result0 = null;
+          pos = pos1;
+        }
+        if (result0 !== null) {
+          result0 = (function(offset, subject) {
+            return {
+              type: "object-role-map-request",
+              subject: subject
+            }
+          })(pos0, result0[2]);
+        }
+        if (result0 === null) {
+          pos = pos0;
+        }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("object role map request");
+        }
+        return result0;
+      }
+      
+      function parse_SubjectRoleMapRequest() {
+        var result0, result1, result2, result3, result4;
+        var pos0, pos1;
+        
+        reportFailures++;
+        pos0 = pos;
+        pos1 = pos;
+        result0 = parse_Evaluative();
+        if (result0 !== null) {
+          if (input.substr(pos, 12).toLowerCase() === " who can act") {
+            result1 = input.substr(pos, 12);
+            pos += 12;
+          } else {
+            result1 = null;
+            if (reportFailures === 0) {
+              matchFailed("\" who can act\"");
+            }
+          }
+          if (result1 !== null) {
+            if (input.substr(pos, 3).toLowerCase() === " on") {
+              result2 = input.substr(pos, 3);
+              pos += 3;
+            } else {
+              result2 = null;
+              if (reportFailures === 0) {
+                matchFailed("\" on\"");
+              }
+            }
+            result2 = result2 !== null ? result2 : "";
+            if (result2 !== null) {
+              result3 = parse_Obj();
+              result3 = result3 !== null ? result3 : "";
+              if (result3 !== null) {
+                if (input.charCodeAt(pos) === 46) {
+                  result4 = ".";
+                  pos++;
+                } else {
+                  result4 = null;
+                  if (reportFailures === 0) {
+                    matchFailed("\".\"");
+                  }
+                }
+                result4 = result4 !== null ? result4 : "";
+                if (result4 !== null) {
+                  result0 = [result0, result1, result2, result3, result4];
+                } else {
+                  result0 = null;
+                  pos = pos1;
+                }
+              } else {
+                result0 = null;
+                pos = pos1;
+              }
+            } else {
+              result0 = null;
+              pos = pos1;
+            }
+          } else {
+            result0 = null;
+            pos = pos1;
+          }
+        } else {
+          result0 = null;
+          pos = pos1;
+        }
+        if (result0 !== null) {
+          result0 = (function(offset, object) {
+            return {
+              type: "subject-role-map-request",
+              object: object
+            }
+          })(pos0, result0[3]);
+        }
+        if (result0 === null) {
+          pos = pos0;
+        }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("subject role map request");
+        }
+        return result0;
+      }
+      
       function parse_Token() {
         var result0;
         
@@ -1797,6 +1970,59 @@ module.exports = (function(){
         reportFailures--;
         if (reportFailures === 0 && result0 === null) {
           matchFailed("preposition");
+        }
+        return result0;
+      }
+      
+      function parse_Evaluative() {
+        var result0;
+        
+        reportFailures++;
+        if (input.substr(pos, 8).toLowerCase() === "describe") {
+          result0 = input.substr(pos, 8);
+          pos += 8;
+        } else {
+          result0 = null;
+          if (reportFailures === 0) {
+            matchFailed("\"describe\"");
+          }
+        }
+        if (result0 === null) {
+          if (input.substr(pos, 6).toLowerCase() === "detail") {
+            result0 = input.substr(pos, 6);
+            pos += 6;
+          } else {
+            result0 = null;
+            if (reportFailures === 0) {
+              matchFailed("\"detail\"");
+            }
+          }
+          if (result0 === null) {
+            if (input.substr(pos, 7).toLowerCase() === "explain") {
+              result0 = input.substr(pos, 7);
+              pos += 7;
+            } else {
+              result0 = null;
+              if (reportFailures === 0) {
+                matchFailed("\"explain\"");
+              }
+            }
+            if (result0 === null) {
+              if (input.substr(pos, 3).toLowerCase() === "get") {
+                result0 = input.substr(pos, 3);
+                pos += 3;
+              } else {
+                result0 = null;
+                if (reportFailures === 0) {
+                  matchFailed("\"get\"");
+                }
+              }
+            }
+          }
+        }
+        reportFailures--;
+        if (reportFailures === 0 && result0 === null) {
+          matchFailed("evaluative");
         }
         return result0;
       }

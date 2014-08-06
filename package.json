@@ -1,6 +1,6 @@
 {
   "name": "relations",
-  "version": "0.4.4",
+  "version": "0.5.0",
   "description": "entity relationship, role, and permissions API for Node.js",
   "main": "index.js",
   "dependencies": {

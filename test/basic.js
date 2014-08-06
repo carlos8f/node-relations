@@ -4,7 +4,7 @@ describe('memory store', function () {
 
 describe('mysql store', function () {
   var mysql = require('mysql');
-  doBasicTest('mysql', {client: mysql.createConnection({user: 'root', database: 'test'})});
+  doBasicTest('mysql', {database: 'relations_test', client: mysql.createConnection({user: 'root'})});
 });
 
 describe('redis store', function () {

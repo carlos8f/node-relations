@@ -7,7 +7,11 @@ store.on('init', function (options, cb) {
   }
   client = store._client = options.client;
   if (options.database) {
-    client.query("CREATE DATABASE IF NOT EXISTS `?`", options.database, initTable);
+    console.error('create', options.database);
+    client.query("CREATE DATABASE IF NOT EXISTS " + options.database, function (err) {
+      if (err) return cb(err);
+      client.query("USE " + options.database, initTable);
+    });
   }
   else {
     initTable();

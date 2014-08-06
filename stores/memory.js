@@ -1,8 +1,19 @@
 var store = module.exports = require('eventflow')();
-var contexts = {};
+var contexts = store._contexts = {};
+var fs = require('fs');
 
 store.on('init', function (options, cb) {
-  cb();
+  store._save = function (cb) {
+    if (!options.dataFile) return cb();
+    fs.writeFile(options.dataFile, JSON.stringify(contexts, null, 2), cb);
+  };
+  if (options.dataFile) {
+    fs.readFile(options.dataFile, {encoding: 'utf8'}, function (err, raw) {
+      if (raw) contexts = JSON.parse(raw);
+      cb();
+    });
+  }
+  else cb();
 });
 
 function initSubject (cmd) {
@@ -22,7 +33,7 @@ store.on('declaration', function (cmd, cb) {
   else {
     subject.roles[cmd.role] = true;
   }
-  cb();
+  store._save(cb);
 });
 
 store.on('revocation', function (cmd, cb) {
@@ -33,7 +44,7 @@ store.on('revocation', function (cmd, cb) {
   else {
     delete subject.roles[cmd.role];
   }
-  cb();
+  store._save(cb);
 });
 
 store.on('verb-question', function (cmd, cb) {

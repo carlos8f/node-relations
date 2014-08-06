@@ -8,9 +8,10 @@
     "async": "~0.1.22"
   },
   "devDependencies": {
+    "idgen": "^2.0.2",
     "mocha": "*",
-    "pegjs": "~0.7.0",
     "mysql": "2.0.0-alpha3",
+    "pegjs": "~0.7.0",
     "redis": "~0.8.1"
   },
   "scripts": {

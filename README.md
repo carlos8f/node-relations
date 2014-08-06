@@ -288,12 +288,23 @@ relations.repos('%s is not the owner of %s', 'Carlos', 'buffet');
 <subject> ( is not | isn't ) [ a / an / the ] <role> [ [ of / to / from / in / with ] <object> ] [.]
 ```
 
+Persistence
+-----------
+
+Data can be persisted through [database plugins](#pluggable-data-store) or a flat
+file. To use a flat file, initialize `relations` like this:
+
+```js
+var relations = require('relations');
+relations.use(relations.stores.memory, {dataFile: '/path/to/datafile.json'});
+```
+
+`relations` will store and load data, as a JSON blob, in the specified file.
+
 Pluggable data store
 --------------------
 
-**relations** uses a memory store out-of-the-box, which only works with a single
-node processes and has no persistence. Two data stores are also provided
-however: Redis and MySQL.
+Two additional data stores are provided: Redis and MySQL.
 
 ### Redis store
 

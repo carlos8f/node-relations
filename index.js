@@ -106,6 +106,20 @@ relations.stores = {
   redis: require('./stores/redis')
 };
 
+/*
+ * Init mongoose store only, if module can be found
+ * Otherwise this module would not work with memory, mysql or redis store and mongoose not installed
+ */
+try {
+  require.resolve('mongoose');
+  relations.stores.mongoose = require('./stores/mongoose');
+} catch (e) {
+  if (e.code === 'MODULE_NOT_FOUND') {
+    console.log("Could not add store 'mongoose' because module 'mongoose' does not exist");
+  }
+  console.log(e.message);
+}
+
 relations.use = function (store, options) {
   relations._ready = false;
   relations.store = store;

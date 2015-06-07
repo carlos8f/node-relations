@@ -10,6 +10,7 @@
   "devDependencies": {
     "idgen": "^2.0.2",
     "mocha": "*",
+    "mongoose": "^4.0.5",
     "mysql": "2.0.0-alpha3",
     "pegjs": "~0.7.0",
     "redis": "~0.8.1"
